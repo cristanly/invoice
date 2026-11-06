@@ -151,6 +151,10 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  opacity: .8;
+}
+
 .primary {
   background: black;
   color: white;
@@ -167,6 +171,7 @@ button {
   align-items: center;
   border-bottom: 1px solid var(--border);
   padding-bottom: 20px;
+  gap: 15px;
 }
 
 .invoice-header h1 {
@@ -180,18 +185,24 @@ button {
   font-size: 13px;
 }
 
+/* EARNOS LOGO */
 .logo {
-  width: 58px;
-  height: 58px;
-  background: black;
+  width: 65px;
+  height: 65px;
+  min-width: 65px;
+  background: #000;
   border-radius: 8px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  display: block;
 }
 
 .meta {
@@ -211,6 +222,7 @@ button {
 
 .meta strong {
   font-size: 13px;
+  overflow-wrap: anywhere;
 }
 
 table {
@@ -227,7 +239,8 @@ th {
   border-bottom: 1px solid var(--border);
 }
 
-th:last-child, td:last-child {
+th:last-child,
+td:last-child {
   text-align: right;
 }
 
@@ -276,6 +289,10 @@ td:last-child {
   font-size: 12px;
 }
 
+.payment p {
+  margin: 6px 0;
+}
+
 .thanks {
   margin-top: 25px;
   font-size: 12px;
@@ -300,9 +317,22 @@ td:last-child {
   .panel, .invoice {
     padding: 18px;
   }
+
+  .header-inner {
+    gap: 12px;
+  }
+
+  .invoice-header h1 {
+    font-size: 21px;
+  }
 }
 
 @media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
   body {
     background: white;
   }
@@ -315,11 +345,18 @@ td:last-child {
     display: block;
     margin: 0;
     padding: 0;
+    max-width: none;
   }
 
   .invoice {
     border: none;
-    padding: 15px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .total {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 }
 </style>
@@ -329,16 +366,22 @@ td:last-child {
 
 <header>
   <div class="header-inner">
-    <div class="brand">EarnOS <span>Salary Desk</span></div>
+    <div class="brand">
+      EarnOS <span>Salary Desk</span>
+    </div>
     <div class="tag">CSR SALARY INVOICE</div>
   </div>
 </header>
 
 <main>
 
+<!-- INVOICE INPUT FORM -->
 <section class="panel">
+
   <h2>Invoice Details</h2>
-  <p class="subtitle">Enter your salary information below.</p>
+  <p class="subtitle">
+    Enter your salary information below.
+  </p>
 
   <div class="fields">
 
@@ -349,7 +392,8 @@ td:last-child {
 
     <div class="field">
       <label>POSITION</label>
-      <input id="position" value="Customer Support Representative">
+      <input id="position"
+        value="Customer Support Representative">
     </div>
 
     <div class="field">
@@ -359,7 +403,8 @@ td:last-child {
 
     <div class="field">
       <label>INVOICE PERIOD</label>
-      <input id="period" placeholder="November 1–15, 2026">
+      <input id="period"
+        placeholder="November 1–15, 2026">
     </div>
 
     <div class="field">
@@ -370,21 +415,24 @@ td:last-child {
     <div class="field">
       <label>BASIC SALARY (USD)</label>
       <div class="money">
-        <input id="basic" type="number" min="0" step="0.01" value="0">
+        <input id="basic" type="number"
+          min="0" step="0.01" value="0">
       </div>
     </div>
 
     <div class="field">
       <label>OVERTIME PAY (USD)</label>
       <div class="money">
-        <input id="overtime" type="number" min="0" step="0.01" value="0">
+        <input id="overtime" type="number"
+          min="0" step="0.01" value="0">
       </div>
     </div>
 
     <div class="field full">
       <label>BONUS (USD)</label>
       <div class="money">
-        <input id="bonus" type="number" min="0" step="0.01" value="0">
+        <input id="bonus" type="number"
+          min="0" step="0.01" value="0">
       </div>
     </div>
 
@@ -401,6 +449,7 @@ td:last-child {
   </div>
 
   <div class="actions">
+
     <button class="primary" onclick="window.print()">
       Print / Save PDF
     </button>
@@ -412,24 +461,33 @@ td:last-child {
     <button class="secondary" onclick="clearDetails()">
       Clear
     </button>
+
   </div>
+
 </section>
 
+<!-- INVOICE PREVIEW -->
 <section class="invoice">
 
   <div class="invoice-header">
+
     <div>
       <h1>SALARY INVOICE</h1>
-      <div class="company" id="vCompany">EarnOS</div>
+      <div class="company" id="vCompany">
+        EarnOS
+      </div>
     </div>
 
     <div class="logo">
-      <!-- Replace this src with your EarnOS logo file -->
-      <img src="ear nos-logo.jpeg" alt="EarnOS Logo">
+      <img
+        src="earnos-logo.jpeg"
+        alt="EarnOS Logo">
     </div>
+
   </div>
 
   <div class="meta">
+
     <div>
       <small>Employee</small>
       <strong id="vEmployee">[Your Full Name]</strong>
@@ -437,7 +495,9 @@ td:last-child {
 
     <div>
       <small>Position</small>
-      <strong id="vPosition">Customer Support Representative</strong>
+      <strong id="vPosition">
+        Customer Support Representative
+      </strong>
     </div>
 
     <div>
@@ -449,9 +509,11 @@ td:last-child {
       <small>Invoice Date</small>
       <strong id="vDate">[Invoice Date]</strong>
     </div>
+
   </div>
 
   <table>
+
     <thead>
       <tr>
         <th>Description</th>
@@ -460,6 +522,7 @@ td:last-child {
     </thead>
 
     <tbody>
+
       <tr>
         <td>Basic Salary</td>
         <td id="vBasic">$0.00</td>
@@ -474,7 +537,9 @@ td:last-child {
         <td>Bonus</td>
         <td id="vBonus">$0.00</td>
       </tr>
+
     </tbody>
+
   </table>
 
   <div class="total">
@@ -483,9 +548,19 @@ td:last-child {
   </div>
 
   <div class="payment">
+
     <h3>PAYMENT DETAILS</h3>
-    <p>Payment Method: <b id="vMethod">[Bank / E-wallet]</b></p>
-    <p>Account Name: <b id="vAccount">[Your Name]</b></p>
+
+    <p>
+      Payment Method:
+      <b id="vMethod">[Bank / E-wallet]</b>
+    </p>
+
+    <p>
+      Account Name:
+      <b id="vAccount">[Your Name]</b>
+    </p>
+
   </div>
 
   <div class="thanks">
@@ -493,23 +568,35 @@ td:last-child {
   </div>
 
 </section>
+
 </main>
 
 <script>
+
 const fields = [
-  "employee", "position", "company", "period",
-  "date", "basic", "overtime", "bonus",
-  "method", "account"
+  "employee",
+  "position",
+  "company",
+  "period",
+  "date",
+  "basic",
+  "overtime",
+  "bonus",
+  "method",
+  "account"
 ];
 
 const get = id => document.getElementById(id);
 
+// USD FORMAT
 const currency = amount =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD"
   }).format(Number(amount) || 0);
 
+
+// UPDATE INVOICE PREVIEW
 function updateInvoice() {
 
   get("vEmployee").textContent =
@@ -534,10 +621,14 @@ function updateInvoice() {
           })
       : "[Invoice Date]";
 
-  ["basic", "overtime", "bonus"].forEach(id => {
-    get("v" + id.charAt(0).toUpperCase() + id.slice(1))
-      .textContent = currency(get(id).value);
-  });
+  get("vBasic").textContent =
+    currency(get("basic").value);
+
+  get("vOvertime").textContent =
+    currency(get("overtime").value);
+
+  get("vBonus").textContent =
+    currency(get("bonus").value);
 
   const total =
     Number(get("basic").value || 0) +
@@ -553,39 +644,70 @@ function updateInvoice() {
     get("account").value || "[Your Name]";
 }
 
+
+// LISTEN FOR INPUT CHANGES
 fields.forEach(id => {
   get(id).addEventListener("input", updateInvoice);
 });
 
+
+// SAVE DETAILS
 function saveDetails() {
+
   const data = {};
 
   fields.forEach(id => {
     data[id] = get(id).value;
   });
 
-  localStorage.setItem("earnosSalary", JSON.stringify(data));
-  alert("Invoice details saved!");
+  try {
+    localStorage.setItem(
+      "earnosSalary",
+      JSON.stringify(data)
+    );
+
+    alert("Invoice details saved successfully!");
+
+  } catch (error) {
+    alert("Unable to save details in this browser.");
+  }
 }
 
+
+// CLEAR FORM
 function clearDetails() {
-  if (!confirm("Clear all invoice details?")) return;
+
+  if (!confirm("Clear all invoice details?")) {
+    return;
+  }
 
   fields.forEach(id => {
     get(id).value = "";
   });
 
-  get("position").value = "Customer Support Representative";
+  get("position").value =
+    "Customer Support Representative";
+
   get("company").value = "EarnOS";
 
-  localStorage.removeItem("earnosSalary");
+  try {
+    localStorage.removeItem("earnosSalary");
+  } catch (error) {}
+
   updateInvoice();
 }
 
-function loadDetails() {
-  const saved = localStorage.getItem("earnosSalary");
 
-  if (saved) {
+// LOAD SAVED DETAILS
+function loadDetails() {
+
+  try {
+
+    const saved =
+      localStorage.getItem("earnosSalary");
+
+    if (!saved) return;
+
     const data = JSON.parse(saved);
 
     fields.forEach(id => {
@@ -593,13 +715,20 @@ function loadDetails() {
         get(id).value = data[id];
       }
     });
+
+  } catch (error) {
+    console.error("Unable to load saved invoice.");
   }
 }
 
-get("date").value = new Date().toISOString().slice(0, 10);
+
+// INITIALIZE
+get("date").value =
+  new Date().toISOString().slice(0, 10);
 
 loadDetails();
 updateInvoice();
+
 </script>
 
 </body>
